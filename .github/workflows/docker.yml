@@ -38,6 +38,8 @@ jobs:
           target: builder
           push: true
           tags: ${{ env.IMAGE }}:builder
+          build-args: |
+            NEXT_PUBLIC_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
