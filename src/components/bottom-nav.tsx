@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Home, UtensilsCrossed, Activity, Clock } from "lucide-react"
+import { Home, UtensilsCrossed, Activity, Clock, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navItems = [
@@ -10,6 +10,7 @@ const navItems = [
   { href: "/meals", label: "Refeições", icon: UtensilsCrossed },
   { href: "/symptoms", label: "Sintomas", icon: Activity },
   { href: "/timeline", label: "Histórico", icon: Clock },
+  { href: "/reports", label: "Relatório", icon: Sparkles },
 ]
 
 export function BottomNav() {

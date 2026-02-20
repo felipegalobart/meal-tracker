@@ -9,10 +9,13 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^3.0.30",
+    "@ai-sdk/react": "^3.0.97",
     "@auth/prisma-adapter": "^2.11.1",
     "@marsidev/react-turnstile": "^1.4.2",
     "@prisma/adapter-pg": "^7.4.0",
     "@prisma/client": "^7.4.0",
+    "ai": "^6.0.95",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
