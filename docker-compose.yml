@@ -55,6 +55,7 @@ services:
       AUTH_TRUST_HOST: "true"
       NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY:-}
       TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:-}
+      GOOGLE_GENERATIVE_AI_API_KEY: ${GOOGLE_GENERATIVE_AI_API_KEY:-}
     depends_on:
       db:
         condition: service_healthy
