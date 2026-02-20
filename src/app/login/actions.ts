@@ -2,8 +2,15 @@
 
 import { signIn } from "@/lib/auth"
 import { AuthError } from "next-auth"
+import { verifyTurnstile } from "@/lib/turnstile"
 
 export async function loginAction(_: string, formData: FormData): Promise<string> {
+  const turnstileToken = formData.get("turnstileToken") as string
+  const valid = await verifyTurnstile(turnstileToken ?? "")
+  if (!valid) {
+    return "Verificação de segurança falhou. Tente novamente."
+  }
+
   try {
     await signIn("credentials", {
       email: formData.get("email"),

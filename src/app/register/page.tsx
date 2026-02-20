@@ -4,6 +4,7 @@ import { useState } from "react"
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { Turnstile } from "@marsidev/react-turnstile"
 
 const fieldClass = "w-full rounded-xl px-4 py-3.5 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground"
 const fieldStyle = { background: "oklch(0.19 0.015 52)", border: "1px solid oklch(0.28 0.018 54 / 55%)" }
@@ -13,6 +14,7 @@ export default function RegisterPage() {
   const router = useRouter()
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [turnstileToken, setTurnstileToken] = useState("")
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -36,6 +38,7 @@ export default function RegisterPage() {
         name: formData.get("name"),
         email: formData.get("email"),
         password,
+        turnstileToken,
       }),
     })
 
@@ -160,6 +163,14 @@ export default function RegisterPage() {
                 onBlur={(e) => { e.target.style.boxShadow = "none" }}
               />
             </div>
+
+            {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+              <Turnstile
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                onSuccess={setTurnstileToken}
+                options={{ theme: "dark", size: "flexible" }}
+              />
+            )}
 
             <button
               type="submit"

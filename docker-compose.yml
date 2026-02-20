@@ -51,6 +51,8 @@ services:
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3010}
       AUTH_URL: ${AUTH_URL:-http://localhost:3010}
       AUTH_TRUST_HOST: "true"
+      NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY:-}
+      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY:-}
     depends_on:
       db:
         condition: service_healthy

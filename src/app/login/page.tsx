@@ -1,7 +1,8 @@
 "use client"
 
-import { useActionState } from "react"
+import { useActionState, useState } from "react"
 import Link from "next/link"
+import { Turnstile } from "@marsidev/react-turnstile"
 import { loginAction } from "./actions"
 
 const fieldClass = "w-full rounded-xl px-4 py-3.5 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground"
@@ -10,6 +11,7 @@ const fieldFocusStyle = { outline: "none", boxShadow: "0 0 0 2px oklch(0.74 0.11
 
 export default function LoginPage() {
   const [error, formAction, pending] = useActionState(loginAction, "")
+  const [turnstileToken, setTurnstileToken] = useState("")
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center p-6">
@@ -72,6 +74,16 @@ export default function LoginPage() {
                 onBlur={(e) => { e.target.style.boxShadow = "none" }}
               />
             </div>
+
+            <input type="hidden" name="turnstileToken" value={turnstileToken} />
+
+            {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+              <Turnstile
+                siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+                onSuccess={setTurnstileToken}
+                options={{ theme: "dark", size: "flexible" }}
+              />
+            )}
 
             <button
               type="submit"
