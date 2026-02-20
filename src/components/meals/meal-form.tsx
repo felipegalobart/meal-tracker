@@ -10,8 +10,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { IngredientInput } from "@/components/meals/ingredient-input"
-import { createMeal } from "@/app/(app)/meals/actions"
+import { createMeal, updateMeal } from "@/app/(app)/meals/actions"
 import { format } from "date-fns"
+import type { MealType } from "@prisma/client"
 
 const mealTypes = [
   { value: "BREAKFAST", label: "Café da manhã" },
@@ -33,9 +34,20 @@ function FormLabel({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function MealForm() {
+interface MealFormProps {
+  meal?: {
+    id: string
+    name: string
+    mealType: MealType
+    ingredients: string[]
+    notes: string | null
+    loggedAt: Date
+  }
+}
+
+export function MealForm({ meal }: MealFormProps) {
   const router = useRouter()
-  const [ingredients, setIngredients] = useState<string[]>([])
+  const [ingredients, setIngredients] = useState<string[]>(meal?.ingredients ?? [])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
@@ -49,7 +61,11 @@ export function MealForm() {
     formData.set("ingredients", JSON.stringify(ingredients))
 
     try {
-      await createMeal(formData)
+      if (meal) {
+        await updateMeal(meal.id, formData)
+      } else {
+        await createMeal(formData)
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "Algo deu errado")
       setLoading(false)
@@ -69,7 +85,7 @@ export function MealForm() {
 
       <div className="space-y-2">
         <FormLabel>Tipo de Refeição</FormLabel>
-        <Select name="mealType" required>
+        <Select name="mealType" required defaultValue={meal?.mealType}>
           <SelectTrigger
             className="h-12 rounded-xl border-0 text-sm"
             style={fieldStyle}
@@ -92,6 +108,7 @@ export function MealForm() {
           name="name"
           placeholder="ex.: Frango grelhado, Macarrão…"
           required
+          defaultValue={meal?.name}
           className={fieldClass}
           style={fieldStyle}
           onFocus={(e) => Object.assign(e.target.style, fieldFocusStyle)}
@@ -109,7 +126,7 @@ export function MealForm() {
         <input
           name="loggedAt"
           type="datetime-local"
-          defaultValue={format(new Date(), "yyyy-MM-dd'T'HH:mm")}
+          defaultValue={format(meal ? new Date(meal.loggedAt) : new Date(), "yyyy-MM-dd'T'HH:mm")}
           required
           className={fieldClass}
           style={fieldStyle}
@@ -124,6 +141,7 @@ export function MealForm() {
           name="notes"
           placeholder="Detalhes adicionais…"
           rows={3}
+          defaultValue={meal?.notes ?? ""}
           className={`${fieldClass} resize-none leading-relaxed`}
           style={fieldStyle}
           onFocus={(e) => Object.assign(e.target.style, fieldFocusStyle)}
@@ -146,7 +164,7 @@ export function MealForm() {
           className="h-12 flex-1 rounded-xl text-sm font-semibold transition-all active:scale-[0.98] disabled:opacity-60"
           style={{ background: "oklch(0.74 0.110 54)", color: "oklch(0.115 0.014 54)" }}
         >
-          {loading ? "Salvando…" : "Salvar Refeição"}
+          {loading ? "Salvando…" : meal ? "Salvar alterações" : "Salvar Refeição"}
         </button>
       </div>
     </form>

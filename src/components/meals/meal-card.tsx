@@ -2,7 +2,8 @@
 
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
-import { Trash2 } from "lucide-react"
+import { Pencil, Trash2 } from "lucide-react"
+import Link from "next/link"
 import { deleteMeal } from "@/app/(app)/meals/actions"
 import { toast } from "sonner"
 import type { MealType } from "@prisma/client"
@@ -92,12 +93,20 @@ export function MealCard({ meal }: MealCardProps) {
             )}
           </div>
 
-          <button
-            onClick={handleDelete}
-            className="mt-0.5 shrink-0 rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
-          >
-            <Trash2 className="h-4 w-4" />
-          </button>
+          <div className="mt-0.5 flex shrink-0 gap-1">
+            <Link
+              href={`/meals/${meal.id}/edit`}
+              className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-primary/10 hover:text-primary"
+            >
+              <Pencil className="h-4 w-4" />
+            </Link>
+            <button
+              onClick={handleDelete}
+              className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
