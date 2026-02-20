@@ -25,6 +25,7 @@ services:
   #   `npx prisma migrate deploy`
   # and ensure you have run `npx prisma migrate dev --name init` locally first.
   migrate:
+    image: ghcr.io/felipegalobart/meal-tracker:builder
     build:
       context: .
       target: builder
@@ -40,6 +41,7 @@ services:
 
   # ── Next.js app ─────────────────────────────────────────────────────────────
   app:
+    image: ghcr.io/felipegalobart/meal-tracker:latest
     build:
       context: .
       target: runner
