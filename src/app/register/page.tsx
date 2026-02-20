@@ -72,7 +72,7 @@ export default function RegisterPage() {
 
       <div className="relative w-full max-w-sm space-y-8">
         <div className="text-center">
-          <img src="/logo.png" alt="Meal Tracker" className="mx-auto mb-5 h-14 w-14 rounded-2xl" />
+          <img src="/logo.png" alt="Meal Tracker" className="mx-auto mb-5 h-28 w-28 rounded-2xl" />
           <h1 className="font-serif text-3xl font-semibold text-foreground">Comece seu diário</h1>
           <p className="mt-1.5 text-sm text-muted-foreground">Crie sua conta no Meal Tracker</p>
         </div>
