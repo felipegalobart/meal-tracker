@@ -23,30 +23,53 @@ export async function POST() {
   ])
 
   if (meals.length === 0 && symptoms.length === 0) {
-    return NextResponse.json({ error: "No data" }, { status: 400 })
+    return NextResponse.json(
+      { error: "Nenhum dado encontrado. Registre refeições ou sintomas primeiro." },
+      { status: 400 }
+    )
   }
 
-  const { object } = await generateObject({
-    model: google("gemini-2.0-flash"),
-    schema: ReportSchema,
-    prompt: `
-      You are a personal nutrition and health analyst. Analyze the following meal and symptom logs
-      and provide insights entirely in Brazilian Portuguese.
+  try {
+    const { object } = await generateObject({
+      model: google("gemini-2.0-flash"),
+      schema: ReportSchema,
+      prompt: `
+        You are a personal nutrition and health analyst. Analyze the following meal and symptom logs
+        and provide insights entirely in Brazilian Portuguese.
 
-      Focus on:
-      - Eating patterns: meal type distribution, timing, skipped meals
-      - Correlations between specific foods/ingredients and symptoms (especially allergies,
-        digestive issues, inflammation, headaches, fatigue, skin reactions)
-      - Symptom severity trends over time
-      - Concrete dietary recommendations
+        Focus on:
+        - Eating patterns: meal type distribution, timing, skipped meals
+        - Correlations between specific foods/ingredients and symptoms (especially allergies,
+          digestive issues, inflammation, headaches, fatigue, skin reactions)
+        - Symptom severity trends over time
+        - Concrete dietary recommendations
 
-      Meals logged (${meals.length} total):
-      ${JSON.stringify(meals, null, 2)}
+        Meals logged (${meals.length} total):
+        ${JSON.stringify(meals, null, 2)}
 
-      Symptoms logged (${symptoms.length} total):
-      ${JSON.stringify(symptoms, null, 2)}
-    `,
-  })
+        Symptoms logged (${symptoms.length} total):
+        ${JSON.stringify(symptoms, null, 2)}
+      `,
+    })
 
-  return NextResponse.json(object)
+    return NextResponse.json(object)
+  } catch (error: unknown) {
+    const msg = String(error)
+    if (msg.includes("429") || msg.includes("quota") || msg.includes("FreeTier") || msg.includes("rate")) {
+      return NextResponse.json(
+        { error: "Limite de requisições atingido. Aguarde 1 minuto e tente novamente." },
+        { status: 429 }
+      )
+    }
+    if (msg.includes("API key")) {
+      return NextResponse.json(
+        { error: "Chave da API do Gemini não configurada no servidor." },
+        { status: 500 }
+      )
+    }
+    return NextResponse.json(
+      { error: "Erro ao gerar relatório. Tente novamente." },
+      { status: 500 }
+    )
+  }
 }
