@@ -57,3 +57,20 @@ jobs:
             NEXT_PUBLIC_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to homelab
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.HOMELAB_HOST }}
+          username: homelab
+          key: ${{ secrets.HOMELAB_SSH_KEY }}
+          script: |
+            cd ~/meal-tracker
+            docker compose pull app migrate
+            docker compose run --rm migrate
+            docker compose up -d app
