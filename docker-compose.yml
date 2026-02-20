@@ -1,0 +1,71 @@
+services:
+
+  # ── PostgreSQL ──────────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: mealtracker
+      POSTGRES_USER: mealtracker
+      POSTGRES_PASSWORD: mealtracker
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - db
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mealtracker -d mealtracker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+
+  # ── Schema sync (runs once, then exits) ────────────────────────────────────
+  # For a fresh DB: syncs the Prisma schema directly.
+  # For production with migration history: replace `db push` with
+  #   `npx prisma migrate deploy`
+  # and ensure you have run `npx prisma migrate dev --name init` locally first.
+  migrate:
+    build:
+      context: .
+      target: builder
+    command: npx prisma db push --accept-data-loss
+    environment:
+      DATABASE_URL: postgresql://mealtracker:mealtracker@db:5432/mealtracker
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - db
+    restart: "no"
+
+  # ── Next.js app ─────────────────────────────────────────────────────────────
+  app:
+    build:
+      context: .
+      target: runner
+    environment:
+      DATABASE_URL: postgresql://mealtracker:mealtracker@db:5432/mealtracker
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?Set NEXTAUTH_SECRET in .env or shell}
+      NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3003}
+      AUTH_TRUST_HOST: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    ports:
+      - "3003:3000"
+    networks:
+      - web
+      - db
+    restart: unless-stopped
+
+networks:
+  web:
+    driver: bridge
+  db:
+    driver: bridge
+    internal: true  # DB not reachable from outside
+
+volumes:
+  postgres_data:
