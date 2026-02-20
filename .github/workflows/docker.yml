@@ -1,76 +1,37 @@
-name: Build & push Docker image
+name: Deploy
 
 on:
   push:
     branches: [main]
-  workflow_dispatch: # allow manual trigger from GitHub UI
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE: ghcr.io/felipegalobart/meal-tracker
+  workflow_dispatch:
 
 jobs:
-  build-and-push:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write # needed to push to GHCR
+  deploy:
+    runs-on: self-hosted
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }} # no extra secret needed
+      - name: Build and deploy
+        run: |
+          docker compose --env-file ~/meal-tracker/.env up -d --build
 
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: Health check
+        run: |
+          for i in {1..5}; do
+            if curl -sf http://localhost:3010/login > /dev/null; then
+              echo "Application is healthy"
+              exit 0
+            fi
+            echo "Attempt $i/5 - waiting..."
+            sleep 10
+          done
+          echo "Health check failed"
+          exit 1
 
-      # ── Builder image (used by the migrate service) ──────────────────────────
-      - name: Build & push builder stage
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          target: builder
-          push: true
-          tags: ${{ env.IMAGE }}:builder
-          build-args: |
-            NEXT_PUBLIC_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      # ── Runner image (the actual app) ────────────────────────────────────────
-      - name: Build & push runner stage
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          target: runner
-          push: true
-          tags: |
-            ${{ env.IMAGE }}:latest
-            ${{ env.IMAGE }}:${{ github.sha }}
-          build-args: |
-            NEXT_PUBLIC_TURNSTILE_SITE_KEY=${{ vars.NEXT_PUBLIC_TURNSTILE_SITE_KEY }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-  deploy:
-    needs: build-and-push
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Deploy to homelab
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.HOMELAB_HOST }}
-          username: homelab
-          key: ${{ secrets.HOMELAB_SSH_KEY }}
-          script: |
-            cd ~/meal-tracker
-            docker compose pull app migrate
-            docker compose run --rm migrate
-            docker compose up -d app
+      - name: Rollback on failure
+        if: failure()
+        run: |
+          echo "Rolling back to previous image..."
+          docker compose --env-file ~/meal-tracker/.env up -d

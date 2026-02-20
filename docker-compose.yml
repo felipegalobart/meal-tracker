@@ -25,7 +25,7 @@ services:
   #   `npx prisma migrate deploy`
   # and ensure you have run `npx prisma migrate dev --name init` locally first.
   migrate:
-    image: ghcr.io/felipegalobart/meal-tracker:builder
+    image: meal-tracker:builder
     build:
       context: .
       target: builder
@@ -41,10 +41,12 @@ services:
 
   # ── Next.js app ─────────────────────────────────────────────────────────────
   app:
-    image: ghcr.io/felipegalobart/meal-tracker:latest
+    image: meal-tracker:app
     build:
       context: .
       target: runner
+      args:
+        NEXT_PUBLIC_TURNSTILE_SITE_KEY: ${NEXT_PUBLIC_TURNSTILE_SITE_KEY:-}
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-mealtracker}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env or shell}@db:5432/${POSTGRES_DB:-mealtracker}
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?Set NEXTAUTH_SECRET in .env or shell}
