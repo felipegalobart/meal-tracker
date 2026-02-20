@@ -31,7 +31,7 @@ export async function POST() {
 
   try {
     const { object } = await generateObject({
-      model: google("gemini-2.0-flash"),
+      model: google("gemini-2.5-flash"),
       schema: ReportSchema,
       prompt: `
         You are a personal nutrition and health analyst. Analyze the following meal and symptom logs
