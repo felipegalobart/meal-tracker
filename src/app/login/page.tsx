@@ -1,40 +1,15 @@
 "use client"
 
-import { useState } from "react"
-import { signIn } from "next-auth/react"
-import { useRouter } from "next/navigation"
+import { useActionState } from "react"
 import Link from "next/link"
+import { loginAction } from "./actions"
 
 const fieldClass = "w-full rounded-xl px-4 py-3.5 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground"
 const fieldStyle = { background: "oklch(0.19 0.015 52)", border: "1px solid oklch(0.28 0.018 54 / 55%)" }
 const fieldFocusStyle = { outline: "none", boxShadow: "0 0 0 2px oklch(0.74 0.110 54 / 35%)" }
 
 export default function LoginPage() {
-  const router = useRouter()
-  const [error, setError] = useState("")
-  const [loading, setLoading] = useState(false)
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setError("")
-    setLoading(true)
-
-    const formData = new FormData(e.currentTarget)
-    const result = await signIn("credentials", {
-      email: formData.get("email"),
-      password: formData.get("password"),
-      redirect: false,
-    })
-
-    setLoading(false)
-
-    if (result?.error) {
-      setError("E-mail ou senha inválidos")
-    } else {
-      router.push("/")
-      router.refresh()
-    }
-  }
+  const [error, formAction, pending] = useActionState(loginAction, "")
 
   return (
     <div className="flex min-h-dvh flex-col items-center justify-center p-6">
@@ -68,7 +43,7 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form action={formAction} className="space-y-4">
             <div className="space-y-1.5">
               <label className="block text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
                 E-mail
@@ -105,11 +80,11 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={pending}
               className="mt-2 h-12 w-full rounded-xl text-sm font-semibold transition-all active:scale-[0.98] disabled:opacity-60"
               style={{ background: "oklch(0.74 0.110 54)", color: "oklch(0.115 0.014 54)" }}
             >
-              {loading ? "Entrando…" : "Entrar"}
+              {pending ? "Entrando…" : "Entrar"}
             </button>
           </form>
         </div>
