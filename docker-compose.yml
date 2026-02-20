@@ -49,6 +49,7 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-mealtracker}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env or shell}@db:5432/${POSTGRES_DB:-mealtracker}
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET:?Set NEXTAUTH_SECRET in .env or shell}
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:3010}
+      AUTH_URL: ${AUTH_URL:-http://localhost:3010}
       AUTH_TRUST_HOST: "true"
     depends_on:
       db:
