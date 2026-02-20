@@ -9,9 +9,7 @@ export async function middleware(request: NextRequest) {
   })
 
   if (!token) {
-const host = request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? new URL(request.url).host
-    const proto = request.headers.get("x-forwarded-proto") ?? (request.url.startsWith("https") ? "https" : "http")
-    const loginUrl = new URL(`${proto}://${host}/login`)
+    const loginUrl = new URL("/login", request.url)
     return NextResponse.redirect(loginUrl)
   }
 

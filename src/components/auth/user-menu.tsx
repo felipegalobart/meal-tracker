@@ -42,7 +42,7 @@ export function UserMenu({ name }: { name?: string | null }) {
           </>
         )}
         <DropdownMenuItem
-          onClick={() => signOut({ callbackUrl: `${window.location.origin}/login` })}
+          onClick={() => signOut({ callbackUrl: "/login" })}
           className="text-muted-foreground focus:text-foreground"
         >
           <LogOut className="mr-2 h-4 w-4" />
