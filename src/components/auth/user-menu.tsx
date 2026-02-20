@@ -1,6 +1,7 @@
 "use client"
 
 import { signOut } from "next-auth/react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -9,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { LogOut } from "lucide-react"
+import { LogOut, UserPlus } from "lucide-react"
 
 export function UserMenu({ name }: { name?: string | null }) {
   const initials = name
@@ -41,6 +42,13 @@ export function UserMenu({ name }: { name?: string | null }) {
             <DropdownMenuSeparator />
           </>
         )}
+        <DropdownMenuItem asChild className="text-muted-foreground focus:text-foreground">
+          <Link href="/settings/create-user">
+            <UserPlus className="mr-2 h-4 w-4" />
+            Criar usuário
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => signOut({ callbackUrl: "/login" })}
           className="text-muted-foreground focus:text-foreground"

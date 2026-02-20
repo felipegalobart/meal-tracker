@@ -1,28 +1,24 @@
 import { NextResponse } from "next/server"
 import bcrypt from "bcryptjs"
 import { prisma } from "@/lib/prisma"
-import { verifyTurnstile } from "@/lib/turnstile"
+import { auth } from "@/lib/auth"
 import { z } from "zod"
 
 const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  turnstileToken: z.string().optional(),
 })
 
 export async function POST(request: Request) {
+  const session = await auth()
+  if (!session?.user?.id) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+  }
+
   try {
     const body = await request.json()
-    const { name, email, password, turnstileToken } = registerSchema.parse(body)
-
-    const turnstileValid = await verifyTurnstile(turnstileToken ?? "")
-    if (!turnstileValid) {
-      return NextResponse.json(
-        { error: "Verificação de segurança falhou. Tente novamente." },
-        { status: 400 }
-      )
-    }
+    const { name, email, password } = registerSchema.parse(body)
 
     const existingUser = await prisma.user.findUnique({
       where: { email },
