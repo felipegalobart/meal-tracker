@@ -25,10 +25,11 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "black-translucent",
     title: "Meal Tracker",
+    startupImage: "/icons/favicon.png",
   },
   icons: {
-    icon: "/icons/icon.svg",
-    apple: "/icons/icon.svg",
+    icon: "/icons/favicon.png",
+    apple: [{ url: "/icons/favicon.png" }],
   },
 }
 

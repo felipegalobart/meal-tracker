@@ -72,12 +72,7 @@ export default function RegisterPage() {
 
       <div className="relative w-full max-w-sm space-y-8">
         <div className="text-center">
-          <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary">
-            <svg width="24" height="24" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7 1C7 1 4 3.5 4 6.5C4 8.16 5.34 9.5 7 9.5C8.66 9.5 10 8.16 10 6.5C10 3.5 7 1 7 1Z" fill="currentColor" fillOpacity="0.9" style={{ color: "oklch(0.115 0.014 54)" }}/>
-              <path d="M5.5 10V13M7 10V13M8.5 10V13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" style={{ color: "oklch(0.115 0.014 54)" }}/>
-            </svg>
-          </div>
+          <img src="/logo.png" alt="Meal Tracker" className="mx-auto mb-5 h-14 w-14 rounded-2xl" />
           <h1 className="font-serif text-3xl font-semibold text-foreground">Comece seu diário</h1>
           <p className="mt-1.5 text-sm text-muted-foreground">Crie sua conta no Meal Tracker</p>
         </div>
