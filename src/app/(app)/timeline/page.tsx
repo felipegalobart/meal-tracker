@@ -2,6 +2,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
+import { LocalTime } from "@/components/local-time"
 import { UtensilsCrossed, Activity } from "lucide-react"
 import type { MealType } from "@prisma/client"
 
@@ -91,9 +92,7 @@ export default async function TimelinePage() {
           <div key={dateKey}>
             <div className="mb-3 flex items-center gap-3">
               <div className="h-px flex-1" style={{ background: "oklch(0.28 0.018 54 / 40%)" }} />
-              <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
-                {format(new Date(dateKey), "EEEE, d 'de' MMMM", { locale: ptBR })}
-              </span>
+              <LocalTime date={new Date(dateKey + "T12:00:00")} fmt="EEEE, d 'de' MMMM" className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground" />
               <div className="h-px flex-1" style={{ background: "oklch(0.28 0.018 54 / 40%)" }} />
             </div>
 
@@ -145,9 +144,7 @@ export default async function TimelinePage() {
                           </div>
                         </div>
 
-                        <span className="shrink-0 text-xs text-muted-foreground">
-                          {format(new Date(item.loggedAt), "HH:mm")}
-                        </span>
+                        <LocalTime date={item.loggedAt} fmt="HH:mm" className="shrink-0 text-xs text-muted-foreground" />
                       </div>
                     </div>
                   )

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { UtensilsCrossed, Activity, ArrowRight } from "lucide-react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
+import { LocalTime } from "@/components/local-time"
 import type { MealType } from "@prisma/client"
 
 const mealTypeLabels: Record<MealType, string> = {
@@ -73,9 +74,7 @@ export default async function DashboardPage() {
         <h1 className="font-serif text-3xl font-semibold leading-tight text-foreground">
           {firstName}.
         </h1>
-        <p className="text-sm text-muted-foreground">
-          {format(new Date(), "EEEE, d 'de' MMMM", { locale: ptBR })}
-        </p>
+        <LocalTime date={new Date()} fmt="EEEE, d 'de' MMMM" className="text-sm text-muted-foreground" />
       </div>
 
       {/* Ações rápidas */}
@@ -155,9 +154,7 @@ export default async function DashboardPage() {
                     <p className="truncate text-sm font-medium text-foreground">{meal.name}</p>
                     <p className="text-xs text-muted-foreground">{mealTypeLabels[meal.mealType]}</p>
                   </div>
-                  <span className="shrink-0 text-xs text-muted-foreground">
-                    {format(new Date(meal.loggedAt), "HH:mm")}
-                  </span>
+                  <LocalTime date={meal.loggedAt} fmt="HH:mm" className="shrink-0 text-xs text-muted-foreground" />
                 </li>
               ))}
             </ul>
@@ -205,9 +202,7 @@ export default async function DashboardPage() {
                     <p className="truncate text-sm font-medium text-foreground">{symptom.name}</p>
                     <p className="text-xs text-muted-foreground">{severityLabels[symptom.severity]}</p>
                   </div>
-                  <span className="shrink-0 text-xs text-muted-foreground">
-                    {format(new Date(symptom.loggedAt), "HH:mm")}
-                  </span>
+                  <LocalTime date={symptom.loggedAt} fmt="HH:mm" className="shrink-0 text-xs text-muted-foreground" />
                 </li>
               ))}
             </ul>

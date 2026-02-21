@@ -60,6 +60,12 @@ export function MealForm({ meal }: MealFormProps) {
     const formData = new FormData(form)
     formData.set("ingredients", JSON.stringify(ingredients))
 
+    // Convert local datetime to ISO so the server stores the correct UTC time
+    const loggedAtLocal = formData.get("loggedAt") as string
+    if (loggedAtLocal) {
+      formData.set("loggedAt", new Date(loggedAtLocal).toISOString())
+    }
+
     try {
       if (meal) {
         await updateMeal(meal.id, formData)

@@ -32,6 +32,12 @@ export function SymptomForm() {
     const formData = new FormData(e.currentTarget)
     formData.set("severity", String(severity))
 
+    // Convert local datetime to ISO so the server stores the correct UTC time
+    const loggedAtLocal = formData.get("loggedAt") as string
+    if (loggedAtLocal) {
+      formData.set("loggedAt", new Date(loggedAtLocal).toISOString())
+    }
+
     try {
       await createSymptom(formData)
     } catch (err) {
