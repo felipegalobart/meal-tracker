@@ -1,10 +1,9 @@
 "use client"
 
-import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
 import { Trash2 } from "lucide-react"
 import { deleteSymptom } from "@/app/(app)/symptoms/actions"
 import { toast } from "sonner"
+import { LocalTime } from "@/components/local-time"
 
 interface SymptomCardProps {
   symptom: {
@@ -57,9 +56,7 @@ export function SymptomCard({ symptom }: SymptomCardProps) {
                   {config.label}
                 </span>
               </div>
-              <span className="text-xs text-muted-foreground">
-                {format(new Date(symptom.loggedAt), "d 'de' MMM, HH:mm", { locale: ptBR })}
-              </span>
+              <LocalTime date={symptom.loggedAt} fmt="d 'de' MMM, HH:mm" className="text-xs text-muted-foreground" />
             </div>
 
             <p className="font-serif text-base font-medium leading-snug text-foreground">

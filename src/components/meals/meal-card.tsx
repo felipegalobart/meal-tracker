@@ -1,11 +1,10 @@
 "use client"
 
-import { format } from "date-fns"
-import { ptBR } from "date-fns/locale"
 import { Pencil, Trash2 } from "lucide-react"
 import Link from "next/link"
 import { deleteMeal } from "@/app/(app)/meals/actions"
 import { toast } from "sonner"
+import { LocalTime } from "@/components/local-time"
 import type { MealType } from "@prisma/client"
 
 interface MealCardProps {
@@ -65,9 +64,7 @@ export function MealCard({ meal }: MealCardProps) {
               >
                 {mealTypeLabels[meal.mealType]}
               </span>
-              <span className="text-xs text-muted-foreground">
-                {format(new Date(meal.loggedAt), "d 'de' MMM, HH:mm", { locale: ptBR })}
-              </span>
+              <LocalTime date={meal.loggedAt} fmt="d 'de' MMM, HH:mm" className="text-xs text-muted-foreground" />
             </div>
 
             <p className="font-serif text-base font-medium leading-snug text-foreground">
