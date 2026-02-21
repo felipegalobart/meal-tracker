@@ -29,27 +29,39 @@ export async function POST() {
     )
   }
 
+  const simplifiedMeals = meals.map((m) => ({
+    meal: m.name,
+    type: m.mealType,
+    ingredients: m.ingredients,
+    notes: m.notes,
+    when: m.loggedAt.toISOString(),
+  }))
+
+  const simplifiedSymptoms = symptoms.map((s) => ({
+    symptom: s.name,
+    severity: `${s.severity}/5`,
+    notes: s.notes,
+    when: s.loggedAt.toISOString(),
+  }))
+
   try {
     const { object } = await generateObject({
       model: google("gemini-2.5-flash"),
       schema: ReportSchema,
-      prompt: `
-        You are a personal nutrition and health analyst. Analyze the following meal and symptom logs
-        and provide insights entirely in Brazilian Portuguese.
+      system: `You are a personal nutrition and health analyst specializing in food sensitivities and dietary patterns. All output must be in Brazilian Portuguese. Be specific — reference actual foods, ingredients, dates, and severity levels from the data. Avoid generic advice.`,
+      prompt: `Analyze the following meal and symptom logs for a user in Brazil (timezone UTC-3). Today is ${new Date().toISOString().slice(0, 10)}.
 
-        Focus on:
-        - Eating patterns: meal type distribution, timing, skipped meals
-        - Correlations between specific foods/ingredients and symptoms (especially allergies,
-          digestive issues, inflammation, headaches, fatigue, skin reactions)
-        - Symptom severity trends over time
-        - Concrete dietary recommendations
+Focus on:
+1. Eating patterns: meal type distribution, timing gaps, consistency, skipped meals
+2. Correlations between specific foods/ingredients and symptoms — pay attention to timing (symptoms appearing 1–24h after a meal suggest a link)
+3. Symptom severity trends over time (improving, worsening, stable)
+4. Concrete dietary recommendations based on the patterns found
 
-        Meals logged (${meals.length} total):
-        ${JSON.stringify(meals, null, 2)}
+Meals (${meals.length}):
+${JSON.stringify(simplifiedMeals)}
 
-        Symptoms logged (${symptoms.length} total):
-        ${JSON.stringify(symptoms, null, 2)}
-      `,
+Symptoms (${symptoms.length}):
+${JSON.stringify(simplifiedSymptoms)}`,
     })
 
     return NextResponse.json(object)
