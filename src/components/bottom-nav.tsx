@@ -6,11 +6,11 @@ import { Home, UtensilsCrossed, Activity, Clock, Sparkles } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 const navItems = [
-  { href: "/", label: "Início", icon: Home },
-  { href: "/meals", label: "Refeições", icon: UtensilsCrossed },
-  { href: "/symptoms", label: "Sintomas", icon: Activity },
-  { href: "/timeline", label: "Histórico", icon: Clock },
-  { href: "/reports", label: "Relatório", icon: Sparkles },
+  { href: "/", label: "Início", icon: Home, match: "/" },
+  { href: "/meals", label: "Refeições", icon: UtensilsCrossed, match: "/meals" },
+  { href: "/symptoms", label: "Sintomas", icon: Activity, match: "/symptoms" },
+  { href: "/timeline", label: "Histórico", icon: Clock, match: "/timeline" },
+  { href: "/reports/history", label: "Relatório", icon: Sparkles, match: "/reports" },
 ]
 
 export function BottomNav() {
@@ -28,9 +28,9 @@ export function BottomNav() {
       <div className="flex h-16 items-center justify-around px-2">
         {navItems.map((item) => {
           const isActive =
-            item.href === "/"
+            item.match === "/"
               ? pathname === "/"
-              : pathname.startsWith(item.href)
+              : pathname.startsWith(item.match)
           return (
             <Link
               key={item.href}

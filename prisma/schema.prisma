@@ -14,6 +14,7 @@ model User {
   password  String
   meals     Meal[]
   symptoms  Symptom[]
+  reports   Report[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -57,4 +58,15 @@ model Symptom {
 
   @@index([userId, loggedAt])
   @@index([loggedAt])
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  userId    String
+  content   Json
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
 }
