@@ -19,10 +19,10 @@ export default async function ReportHistoryPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-serif text-2xl font-semibold text-foreground">
-            Relatorios
+            Relatórios
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Historico de analises de sensibilidade
+            Histórico de análises de sensibilidade
           </p>
         </div>
         <Link
@@ -31,7 +31,7 @@ export default async function ReportHistoryPage() {
           style={{ background: "oklch(0.74 0.110 54)", color: "oklch(0.115 0.014 54)" }}
         >
           <Sparkles className="h-4 w-4" />
-          Nova analise
+          Nova análise
         </Link>
       </div>
 
@@ -41,11 +41,11 @@ export default async function ReportHistoryPage() {
           style={{ background: "oklch(0.155 0.015 52)", border: "1px solid oklch(0.28 0.018 54 / 55%)" }}
         >
           <Sparkles className="mx-auto mb-3 h-8 w-8 text-muted-foreground opacity-40" />
-          <p className="font-serif text-lg text-muted-foreground">Nenhum relatorio ainda</p>
+          <p className="font-serif text-lg text-muted-foreground">Nenhum relatório ainda</p>
           <p className="mt-1 text-sm text-muted-foreground">
             Gere sua primeira{" "}
-            <Link href="/reports" className="text-primary">analise de sensibilidade</Link>
-            {" "}para comecar.
+            <Link href="/reports" className="text-primary">análise de sensibilidade</Link>
+            {" "}para começar.
           </p>
         </div>
       ) : (

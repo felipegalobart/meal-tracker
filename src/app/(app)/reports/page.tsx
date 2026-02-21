@@ -32,7 +32,7 @@ export default function ReportsPage() {
       const res = await fetch("/api/reports", { method: "POST" })
       const data = await res.json()
       if (!res.ok) {
-        setError(data.error ?? "Erro ao gerar relatorio.")
+        setError(data.error ?? "Erro ao gerar relatório.")
         return
       }
       setReport(data)
@@ -43,7 +43,7 @@ export default function ReportsPage() {
         // Saving failed silently — report is still displayed
       }
     } catch {
-      setError("Nao foi possivel conectar ao servidor.")
+      setError("Não foi possível conectar ao servidor.")
     } finally {
       setIsLoading(false)
     }
@@ -55,10 +55,10 @@ export default function ReportsPage() {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="font-serif text-2xl font-semibold text-foreground">
-            Analise de Sensibilidade
+            Análise de Sensibilidade
           </h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Deteccao de gatilhos alimentares com IA
+            Detecção de gatilhos alimentares com IA
           </p>
         </div>
         <button
@@ -75,7 +75,7 @@ export default function ReportsPage() {
             ? "Analisando..."
             : report
               ? "Gerar novamente"
-              : "Gerar analise"}
+              : "Gerar análise"}
         </button>
       </div>
 
@@ -86,7 +86,7 @@ export default function ReportsPage() {
         style={{ color: "oklch(0.74 0.110 54)" }}
       >
         <History className="h-4 w-4" />
-        Ver relatorios anteriores
+        Ver relatórios anteriores
       </Link>
 
       {/* Error */}
@@ -145,12 +145,12 @@ export default function ReportsPage() {
           <Sparkles className="mx-auto mb-3 h-8 w-8 text-muted-foreground opacity-40" />
           <p className="text-sm text-muted-foreground">
             Clique em{" "}
-            <strong className="text-foreground">Gerar analise</strong> para
+            <strong className="text-foreground">Gerar análise</strong> para
             identificar gatilhos alimentares nos seus dados.
           </p>
           <p className="mt-2 text-xs text-muted-foreground opacity-70">
-            A IA analisara correlacoes temporais entre refeicoes e sintomas,
-            padroes FODMAP, histamina e irritantes GI.
+            A IA analisará correlações temporais entre refeições e sintomas,
+            padrões FODMAP, histamina e irritantes GI.
           </p>
         </div>
       )}

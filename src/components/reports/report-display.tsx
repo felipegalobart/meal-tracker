@@ -67,14 +67,14 @@ const categoryLabels: Record<string, { label: string; color: string }> = {
   fodmap: { label: "FODMAP", color: "oklch(0.72 0.12 270)" },
   histamina: { label: "Histamina", color: "oklch(0.72 0.14 45)" },
   irritante_gi: { label: "Irritante GI", color: "oklch(0.78 0.13 80)" },
-  alergenio_comum: { label: "Alergeno", color: "oklch(0.65 0.18 22)" },
+  alergenio_comum: { label: "Alérgeno", color: "oklch(0.65 0.18 22)" },
   outro: { label: "Outro", color: "oklch(0.56 0.022 62)" },
 }
 
 const trendLabels: Record<string, { label: string; color: string }> = {
   melhorando: { label: "Melhorando", color: "oklch(0.70 0.13 148)" },
   piorando: { label: "Piorando", color: "oklch(0.65 0.18 22)" },
-  estável: { label: "Estavel", color: "oklch(0.78 0.13 80)" },
+  estável: { label: "Estável", color: "oklch(0.78 0.13 80)" },
   dados_insuficientes: { label: "Dados insuficientes", color: "oklch(0.56 0.022 62)" },
 }
 
@@ -86,7 +86,7 @@ const priorityColors: Record<string, { label: string; color: string; bg: string;
     border: "oklch(0.65 0.18 22 / 30%)",
   },
   média: {
-    label: "Prioridade Media",
+    label: "Prioridade Média",
     color: "oklch(0.78 0.13 80)",
     bg: "oklch(0.78 0.13 80 / 10%)",
     border: "oklch(0.78 0.13 80 / 30%)",
@@ -188,8 +188,8 @@ function SuspectFoodsSection({ foods }: { foods: SuspectFood[] }) {
             {/* Suspicion bar */}
             <div className="space-y-1">
               <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                <span>Nivel de suspeita</span>
-                <span>{food.occurrences} ocorrencia(s)</span>
+                <span>Nível de suspeita</span>
+                <span>{food.occurrences} ocorrência(s)</span>
               </div>
               <div
                 className="h-1.5 rounded-full overflow-hidden"
@@ -241,7 +241,7 @@ function TemporalSection({ correlations }: { correlations: TemporalCorrelation[]
 
   return (
     <section className="space-y-3">
-      <SectionHeader icon={Clock} title="Correlacoes Temporais" />
+      <SectionHeader icon={Clock} title="Correlações Temporais" />
       {shown.map((c, i) => (
         <div
           key={i}
@@ -389,7 +389,7 @@ function ClustersSection({ clusters }: { clusters: SymptomCluster[] }) {
             {/* Average severity bar */}
             <div className="space-y-1">
               <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-                <span>Severidade media</span>
+                <span>Severidade média</span>
                 <span>{cluster.averageSeverity.toFixed(1)} / 5</span>
               </div>
               <div
@@ -454,7 +454,7 @@ function EliminationSection({
 }) {
   return (
     <section className="space-y-3">
-      <SectionHeader icon={FlaskConical} title="Experimentos de Eliminacao" />
+      <SectionHeader icon={FlaskConical} title="Experimentos de Eliminação" />
       {experiments.map((exp, i) => {
         const prio = priorityColors[exp.priority] ?? priorityColors.baixa
         return (
@@ -473,7 +473,7 @@ function EliminationSection({
                   {exp.title}
                 </p>
                 <p className="text-[11px] text-muted-foreground mt-0.5">
-                  Duracao: {exp.duration}
+                  Duração: {exp.duration}
                 </p>
               </div>
               <span
@@ -539,7 +539,7 @@ function DataQualitySection({ data }: { data: DataQuality }) {
         {/* Stats row */}
         <div className="grid grid-cols-3 gap-3">
           {[
-            { label: "Refeicoes", value: data.totalMeals },
+            { label: "Refeições", value: data.totalMeals },
             { label: "Sintomas", value: data.totalSymptoms },
             { label: "Dias", value: data.trackingDays },
           ].map((stat, i) => (
@@ -647,8 +647,8 @@ export function ReportDisplay({ report }: { report: Report }) {
 
       {/* Disclaimer */}
       <p className="px-1 text-[11px] leading-relaxed text-muted-foreground opacity-60">
-        Esta analise e gerada por IA com base nos seus registros e nao substitui
-        orientacao medica. Compartilhe os resultados com seu gastroenterologista
+        Esta análise é gerada por IA com base nos seus registros e não substitui
+        orientação médica. Compartilhe os resultados com seu gastroenterologista
         ou nutricionista.
       </p>
     </div>

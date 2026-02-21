@@ -26,7 +26,7 @@ export default async function SymptomDetailPage({
       <Button asChild variant="ghost" size="sm" className="gap-1.5">
         <Link href="/symptoms">
           <ArrowLeft className="h-4 w-4" />
-          Back to Symptoms
+          Voltar
         </Link>
       </Button>
       <SymptomCard symptom={symptom} />

@@ -1,14 +1,13 @@
 import type { Metadata, Viewport } from "next"
-import { Playfair_Display, Nunito } from "next/font/google"
+import { DM_Sans, Nunito } from "next/font/google"
 import { Providers } from "@/components/providers"
 import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
-  style: ["normal", "italic"],
 })
 
 const nunito = Nunito({
@@ -49,7 +48,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${playfair.variable} ${nunito.variable} antialiased`}
+        className={`${dmSans.variable} ${nunito.variable} antialiased`}
       >
         <Providers>
           {children}

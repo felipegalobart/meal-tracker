@@ -5,11 +5,8 @@ export async function AppHeader() {
   const session = await auth()
 
   return (
-    <header className="sticky top-0 z-50 pt-[env(safe-area-inset-top)]">
-      <div
-        className="flex h-14 items-center justify-between px-5"
-        style={{ background: "oklch(0.115 0.014 54 / 95%)", backdropFilter: "blur(12px)" }}
-      >
+    <header className="sticky top-0 z-50 pt-[env(safe-area-inset-top)]" style={{ background: "oklch(0.115 0.014 54)" }}>
+      <div className="flex h-14 items-center justify-between px-5">
         {/* Brand mark */}
         <div className="flex items-center gap-2.5">
           <img src="/logo.png" alt="Meal Tracker" className="h-7 w-7 rounded-lg" />

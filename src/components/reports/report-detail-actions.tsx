@@ -9,13 +9,13 @@ export function ReportDetailActions({ reportId }: { reportId: string }) {
   const router = useRouter()
 
   async function handleDelete() {
-    if (!confirm("Excluir este relatorio?")) return
+    if (!confirm("Excluir este relatório?")) return
     try {
       await deleteReport(reportId)
-      toast.success("Relatorio excluido")
+      toast.success("Relatório excluído")
       router.push("/reports/history")
     } catch {
-      toast.error("Falha ao excluir relatorio")
+      toast.error("Falha ao excluir relatório")
     }
   }
 

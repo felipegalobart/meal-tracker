@@ -26,7 +26,7 @@ export default async function MealDetailPage({
       <Button asChild variant="ghost" size="sm" className="gap-1.5">
         <Link href="/meals">
           <ArrowLeft className="h-4 w-4" />
-          Back to Meals
+          Voltar
         </Link>
       </Button>
       <MealCard meal={meal} />

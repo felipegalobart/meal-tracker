@@ -19,12 +19,12 @@ export function ReportHistoryCard({ report }: ReportHistoryCardProps) {
   const content = report.content as ReportType
 
   async function handleDelete() {
-    if (!confirm("Excluir este relatorio?")) return
+    if (!confirm("Excluir este relatório?")) return
     try {
       await deleteReport(report.id)
-      toast.success("Relatorio excluido")
+      toast.success("Relatório excluído")
     } catch {
-      toast.error("Falha ao excluir relatorio")
+      toast.error("Falha ao excluir relatório")
     }
   }
 
@@ -49,7 +49,7 @@ export function ReportHistoryCard({ report }: ReportHistoryCardProps) {
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-sm font-semibold text-foreground">
-              Analise de Sensibilidade
+              Análise de Sensibilidade
             </p>
             <p className="text-[11px] text-muted-foreground mt-0.5">
               <LocalTime date={report.createdAt} fmt="d 'de' MMM, HH:mm" />
@@ -76,7 +76,7 @@ export function ReportHistoryCard({ report }: ReportHistoryCardProps) {
         {/* Data quality stats */}
         {dataQuality && (
           <div className="flex gap-4 text-[11px] text-muted-foreground">
-            <span>{dataQuality.totalMeals} refeicoes</span>
+            <span>{dataQuality.totalMeals} refeições</span>
             <span>{dataQuality.totalSymptoms} sintomas</span>
             <span>{dataQuality.trackingDays} dias</span>
           </div>
