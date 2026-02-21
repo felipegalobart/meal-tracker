@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 
@@ -10,9 +11,17 @@ interface LocalTimeProps {
 }
 
 export function LocalTime({ date, fmt, className }: LocalTimeProps) {
+  const [formatted, setFormatted] = useState("")
+
+  useEffect(() => {
+    setFormatted(format(new Date(date), fmt, { locale: ptBR }))
+  }, [date, fmt])
+
+  if (!formatted) return <span className={className} />
+
   return (
     <span className={className}>
-      {format(new Date(date), fmt, { locale: ptBR })}
+      {formatted}
     </span>
   )
 }
